@@ -51,7 +51,9 @@ public class LivreurService {
     }
 
     public boolean deleteLivreur(Long id) {
-        livreurRepository.deleteById(id);
+        Livreur livreur = livreurRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Livreur introuvable"));
+        livreurRepository.delete(livreur);
         return true;
     }
 

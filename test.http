@@ -1,11 +1,8 @@
 ### All livreur
 GET http://localhost:8080/Smart_Delivery/api/livreurs
-### All Colis
-GET http://localhost:8080/Smart_Delivery/api/colis
 ### livreur by id
 GET http://localhost:8080/Smart_Delivery/api/livreurs/1
-### Colis by id
-GET http://localhost:8080/Smart_Delivery/api/colis/1
+
 ### Create livreur
 POST http://localhost:8080/Smart_Delivery/api/livreurs
 Content-Type: application/json
@@ -16,15 +13,40 @@ Content-Type: application/json
       "vehicule": "walo",
       "telephone": "0698765432"
 }
-### Create Colis
-POST http://localhost:8080/Smart_Delivery/api/colis
+### Update livreur
+PUT http://localhost:8080/Smart_Delivery/api/livreurs/3
 Content-Type: application/json
 
 {
-      "adresseDestination": "123 Main St",
-      "poids": 2.5,
-      "etat": "en cours",
-      "livreur": {
-            "id": 1
-      }
+      "nom": "ISMAIL",
+      "prenom": "BAOUD",
+      "vehicule": "walo",
+      "telephone": "0698765432"
 }
+### Delete livreur
+DELETE http://localhost:8080/Smart_Delivery/api/livreurs/1
+
+
+### All Colis
+GET http://localhost:8080/Smart_Delivery/api/colis
+### Colis by id
+GET http://localhost:8080/Smart_Delivery/api/colis/4
+### Create Colis
+POST http://localhost:8080/Smart_Delivery/api/colis?idLivreur=3
+Content-Type: application/json
+
+{
+  "adresse": "255 Mohammed V, Casablanca",
+  "destinataire": "houssam houssam",
+  "poids": 25
+}
+
+### Update Colis
+PUT http://localhost:8080/Smart_Delivery/api/colis/3
+Content-Type: application/json
+
+{
+  "statut": "EN_TRANSIT"
+}
+### Delete Colis
+DELETE http://localhost:8080/Smart_Delivery/api/colis/4

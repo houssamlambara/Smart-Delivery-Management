@@ -1,6 +1,8 @@
 package com.houssam.Smart_Delivery_Management.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,8 @@ public class Livreur {
     private String vehicule;
     private String telephone;
 
-    @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<Colis> colis = new ArrayList<>();
 
     public Livreur() {}

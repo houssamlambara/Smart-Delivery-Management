@@ -1,5 +1,6 @@
 package com.houssam.Smart_Delivery_Management.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.houssam.Smart_Delivery_Management.enums.StatutColis;
 import jakarta.persistence.*;
 
@@ -19,6 +20,7 @@ public class Colis {
 
     @ManyToOne
     @JoinColumn(name = "livreur_id")
+    @JsonBackReference
     private Livreur livreur;
 
     public Colis(){}

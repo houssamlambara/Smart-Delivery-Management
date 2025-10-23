@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           https://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           https://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/tx
+           https://www.springframework.org/schema/tx/spring-tx.xsd
+           http://www.springframework.org/schema/data/jpa
+           https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <!-- Enable component scanning -->
+    <context:annotation-config/>
+
+    <!-- DATABASE CONFIG -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/Smart_Delivery"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <!-- JPA VENDOR ADAPTER -->
+    <bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+        <property name="showSql" value="true"/>
+        <property name="generateDdl" value="true"/>
+        <property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect"/>
+    </bean>
+
+    <!-- ENTITY MANAGER FACTORY -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.houssam.Smart_Delivery_Management.model"/>
+        <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- TRANSACTION MANAGER -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- ENABLE SPRING DATA JPA REPOSITORIES -->
+    <jpa:repositories base-package="com.houssam.Smart_Delivery_Management.repository"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"/>
+
+    <!-- ENABLE TRANSACTION ANNOTATIONS -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+    <!-- SERVICES -->
+    <bean id="livreurService" class="com.houssam.Smart_Delivery_Management.service.LivreurService">
+        <constructor-arg ref="livreurRepository"/>
+    </bean>
+
+    <bean id="colisService" class="com.houssam.Smart_Delivery_Management.service.ColisService">
+        <property name="colisRepository" ref="colisRepository"/>
+        <property name="livreurRepository" ref="livreurRepository"/>
+    </bean>
+
+    <!-- CONTROLLERS -->
+    <bean name="/livreurs/**" class="com.houssam.Smart_Delivery_Management.controller.LivreurController">
+        <property name="livreurService" ref="livreurService"/>
+    </bean>
+
+    <bean name="/colis/**" class="com.houssam.Smart_Delivery_Management.controller.ColisController">
+        <property name="colisService" ref="colisService"/>
+    </bean>
+
+    <!-- Handler Mapping -->
+    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+        <property name="order" value="1"/>
+    </bean>
+
+    <!-- JSON View -->
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+
+    <!-- View Resolver -->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+
+</beans>

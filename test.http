@@ -1,0 +1,30 @@
+### All livreur
+GET http://localhost:8080/Smart_Delivery/api/livreurs
+### All Colis
+GET http://localhost:8080/Smart_Delivery/api/colis
+### livreur by id
+GET http://localhost:8080/Smart_Delivery/api/livreurs/1
+### Colis by id
+GET http://localhost:8080/Smart_Delivery/api/colis/1
+### Create livreur
+POST http://localhost:8080/Smart_Delivery/api/livreurs
+Content-Type: application/json
+
+{
+      "nom": "ismail",
+      "prenom": "baoud",
+      "vehicule": "walo",
+      "telephone": "0698765432"
+}
+### Create Colis
+POST http://localhost:8080/Smart_Delivery/api/colis
+Content-Type: application/json
+
+{
+      "adresseDestination": "123 Main St",
+      "poids": 2.5,
+      "etat": "en cours",
+      "livreur": {
+            "id": 1
+      }
+}

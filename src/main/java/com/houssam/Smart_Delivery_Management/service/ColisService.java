@@ -45,6 +45,16 @@ public class ColisService {
     }
 
     public void deleteColis(Long id){
+        Colis colis = colisRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+
+        // Détacher le colis du livreur avant suppression
+        if (colis.getLivreur() != null) {
+            Livreur livreur = colis.getLivreur();
+            livreur.getColis().remove(colis);
+            livreurRepository.save(livreur);
+        }
+
         colisRepository.deleteById(id);
     }
 }

@@ -160,13 +160,44 @@ Statuts disponibles : `PREPARATION`, `EN_TRANSIT`, `LIVRE`
 
 ## 🗄️ Modèle de Données
 
+```mermaid
+classDiagram
+    class Livreur {
+        +Long id
+        +String nom
+        +String prenom
+        +String vehicule
+        +String telephone
+        +List~Colis~ colis
+    }
+    
+    class Colis {
+        +Long id
+        +String destinataire
+        +String adresse
+        +Double poids
+        +StatutColis statut
+        +Livreur livreur
+    }
+    
+    class StatutColis {
+        <<enumeration>>
+        PREPARATION
+        EN_TRANSIT
+        LIVRE
+    }
+    
+    Livreur "1" --> "0..*" Colis : peut avoir
+    Colis --> StatutColis : utilise
+```
+
 ### Livreur
 - `id` : Identifiant unique (auto-généré)
 - `nom` : Nom du livreur
 - `prenom` : Prénom du livreur
 - `vehicule` : Type de véhicule (Moto, Voiture, Camionnette)
 - `telephone` : Numéro de téléphone
-- `colis` : Liste des colis assignés
+- `colis` : Liste des colis assignés (relation 1-N)
 
 ### Colis
 - `id` : Identifiant unique (auto-généré)
@@ -175,6 +206,10 @@ Statuts disponibles : `PREPARATION`, `EN_TRANSIT`, `LIVRE`
 - `poids` : Poids du colis (en kg)
 - `statut` : Statut actuel (PREPARATION, EN_TRANSIT, LIVRE)
 - `livreur` : Livreur assigné (relation N-1)
+
+### Relations
+- **1 Livreur** peut avoir **plusieurs Colis** (relation 1..N)
+- **1 Colis** appartient à **1 seul Livreur** (relation N..1)
 
 ## 🏗️ Architecture
 

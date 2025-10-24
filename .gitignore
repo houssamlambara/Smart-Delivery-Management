@@ -18,6 +18,7 @@ target/
 *.iws
 *.iml
 *.ipr
+Smart-Delivery-Management.iml
 
 ### NetBeans ###
 /nbproject/private/
